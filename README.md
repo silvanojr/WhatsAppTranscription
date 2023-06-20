@@ -2,6 +2,8 @@ Update .env with your OpenAI API key and make sure you are using NodeJS >= 16.
 
 You can find more information about OpenAI here: https://platform.openai.com/overview
 
+You need ffmpeg installed to convert audio files: https://ffmpeg.org
+
 `npm install`
 
 `node index.js`
