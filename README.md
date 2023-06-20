@@ -1,4 +1,5 @@
-Update .env with your OpenAI API key and make sure you are using NodeJS >= 16
+Update .env with your OpenAI API key and make sure you are using NodeJS >= 16.
+You can find more information about OpenAI here: https://platform.openai.com/overview
 
 npm install
 
