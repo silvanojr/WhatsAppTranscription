@@ -15,3 +15,9 @@ It will be ready when you see this message in the console:
 🚀 @OPEN-WA ready for account: XXXX
 
 Enjoy.
+
+# Docker
+```shell
+docker build . -t whats
+docker run -ti -e OPENAI_API_KEY=sk-xxxxxx whats
+```
