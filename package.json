@@ -1,0 +1,18 @@
+{
+  "name": "whisper---self",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@open-wa/wa-automate": "^4.66.3",
+    "dotenv": "^16.0.3",
+    "mime": "^3.0.0",
+    "nodejs": "^0.0.0",
+    "openai": "^3.2.1"
+  }
+}
