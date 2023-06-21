@@ -1,3 +1,14 @@
+# WhatsApp audio transcription
+
+This application transcribe WhatsApp audio messages using OpenAI's whisper API.
+
+# Setup
+
+* Create your `.env.local` file using `.env.example` as reference
+
+
+# Usage
+
 Update .env with your OpenAI API key and make sure you are using NodeJS >= 16.
 
 You can find more information about OpenAI here: https://platform.openai.com/overview

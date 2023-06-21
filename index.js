@@ -59,16 +59,16 @@ function start(client) {
                     // call OpenAI's API
                     const resp = await openai.createTranscription(
                         fs.createReadStream(`${filename}.mp3`),
-                        "whisper-1"
+                        .env.proce
                     );
 
-                    client.reply(message.chatId, `🗣️ 
+                    client.reply(message.chatId, `🗣️
     \`\`\`${resp.data.text}\`\`\``, message.id);
                 });
             });
 
 //         // If you have whisper install and want to use it locally instead of through the API
-//         // you can do something like this: 
+//         // you can do something like this:
 //         exec(`whisper --verbose False --output_format txt ${filename}`, (error, stdout, stderr) => {
 //             if (error) {
 //                 console.log(`error: ${error.message}`);
@@ -84,7 +84,7 @@ function start(client) {
 //                 console.log("Getting transcription:");
 //                 console.log(data);
 
-//                 client.reply(message.chatId, `🗣️ 
+//                 client.reply(message.chatId, `🗣️
 // \`\`\`${data}\`\`\``, message.id);
 //             });
 //         });

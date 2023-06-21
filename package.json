@@ -4,9 +4,21 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js"
   },
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/silvanojr/WhatsAppTranscription"
+  },
+  "keywords": [
+    "nodejs",
+    "openai",
+    "whatsapp"
+  ],
+  "bugs": {
+    "url": "https://github.com/silvanojr/WhatsAppTranscription/issues"
+  },
+  "author": "Silvano Jr <github.com/silvanojr>",
   "license": "ISC",
   "dependencies": {
     "@open-wa/wa-automate": "^4.66.3",
