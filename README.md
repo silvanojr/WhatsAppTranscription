@@ -19,7 +19,6 @@ Enjoy.
 # Docker
 ```shell
 docker build . -t whats
-docker run -ti -e OPENAI_API_KEY=sk-xxxxxx whats
 ```
 # Docker Compose
 ```yaml
@@ -31,6 +30,9 @@ services:
        - OPENAI_API_KEY=sk-xxxxxxx
        - GROUPS=aaaaaaaa-bbbbbbb@g.us,yyyyyyyyy-xxxxxxxx@g.us
        - PATH_MP3=/mp3
+       - PATH_SESSION=/session
     tmpfs:
        - /mp3
+    volumes:
+       - ./volumes:/volumes
 ```

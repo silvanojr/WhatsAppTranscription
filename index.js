@@ -10,6 +10,7 @@ const configuration = new Configuration({
 });
 const path_mp3 = process.env.PATH_MP3 ? process.env.PATH_MP3 : '.' ;
 const openai = new OpenAIApi(configuration);
+const sessionDataPath = process.env.PATH_SESSION ? process.env.PATH_SESSION : './' ;
 
 // If you add group IDs here, audio sent to these groups will be transcribed
 const groups = process.env.GROUPS ? process.env.GROUPS : 'xxxx,yyyy' ;
@@ -27,6 +28,7 @@ wa.create({
     logConsole: true,
     popup: true,
     qrTimeout: 0, //0 means it will wait forever for you to scan the qr code
+    sessionDataPath,
 }).then(client => start(client));
 
 function start(client) {
