@@ -59,7 +59,7 @@ function start(client) {
                     // call OpenAI's API
                     const resp = await openai.createTranscription(
                         fs.createReadStream(`${filename}.mp3`),
-                        .env.proce
+                        "whisper-1"
                     );
 
                     client.reply(message.chatId, `🗣️
