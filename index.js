@@ -8,7 +8,12 @@ require('dotenv').config();
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
 });
+const path_mp3 = process.env.PATH_MP3 ? process.env.PATH_MP3 : '.' ;
 const openai = new OpenAIApi(configuration);
+
+// If you add group IDs here, audio sent to these groups will be transcribed
+const groups = process.env.GROUPS ? process.env.GROUPS : 'xxxx,yyyy' ;
+const allowedGroups = groups.split(',');
 
 wa.create({
     useChrome: true,
@@ -24,17 +29,12 @@ wa.create({
     qrTimeout: 0, //0 means it will wait forever for you to scan the qr code
 }).then(client => start(client));
 
-// If you add group IDs here, audio sent to these groups will be transcribed
-const allowedGroups = [
-    // '555555555555-1111111111@g.us',  // Group IDs have this format
-];
-
 function start(client) {
     client.onAnyMessage(async message => {
         console.log(message);
 
         if (((allowedGroups.indexOf(message.chatId) !== -1) || message.isGroupMsg === false) && message.mimetype && message.mimetype.includes("audio")) {
-            const filename = `${message.t}.${mime.extension(message.mimetype)}`;
+            const filename = `${path_mp3}/${message.t}.${mime.extension(message.mimetype)}`;
             const mediaData = await wa.decryptMedia(message);
 
             fs.writeFile(filename, mediaData, async function (err) {
@@ -62,37 +62,11 @@ function start(client) {
                         "whisper-1"
                     );
 
-                    client.reply(message.chatId, `🗣️ 
-    \`\`\`${resp.data.text}\`\`\``, message.id);
+                    client.reply(message.chatId, `🗣️ \`\`\`${resp.data.text}\`\`\``, message.id);
                 });
             });
 
-//         // If you have whisper install and want to use it locally instead of through the API
-//         // you can do something like this: 
-//         exec(`whisper --verbose False --output_format txt ${filename}`, (error, stdout, stderr) => {
-//             if (error) {
-//                 console.log(`error: ${error.message}`);
-//             }
-//             if (stderr) {
-//                 console.log(`stderr: ${stderr}`);
-//             }
-
-//             console.log(`stdout: ${stdout}`);
-
-//             fs.readFile(`${message.t}.txt`, 'utf8', (err, data) => {
-//                 if (err) throw err;
-//                 console.log("Getting transcription:");
-//                 console.log(data);
-
-//                 client.reply(message.chatId, `🗣️ 
-// \`\`\`${data}\`\`\``, message.id);
-//             });
-//         });
         }
 
-        // // Sample response
-        // if (message.body === 'Hi') {
-        //   await client.sendText(message.from, '👋 Hello!');
-        // }
     });
 }

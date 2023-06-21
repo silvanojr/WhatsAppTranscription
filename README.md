@@ -21,3 +21,16 @@ Enjoy.
 docker build . -t whats
 docker run -ti -e OPENAI_API_KEY=sk-xxxxxx whats
 ```
+# Docker Compose
+```yaml
+version: "3.5"
+services:
+  speech2text:
+    image: whats
+    environment:
+       - OPENAI_API_KEY=sk-xxxxxxx
+       - GROUPS=aaaaaaaa-bbbbbbb@g.us,yyyyyyyyy-xxxxxxxx@g.us
+       - PATH_MP3=/mp3
+    tmpfs:
+       - /mp3
+```
