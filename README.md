@@ -31,8 +31,10 @@ services:
        - GROUPS=aaaaaaaa-bbbbbbb@g.us,yyyyyyyyy-xxxxxxxx@g.us
        - PATH_MP3=/mp3
        - PATH_SESSION=/session
-    tmpfs:
-       - /mp3
     volumes:
-       - ./volumes:/volumes
+       - session:/session
+       - mp3:/mp3
+volumes:
+  session:
+  mp3:
 ```

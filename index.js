@@ -8,11 +8,9 @@ require('dotenv').config();
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
 });
-const path_mp3 = process.env.PATH_MP3 ? process.env.PATH_MP3 : '.' ;
 const openai = new OpenAIApi(configuration);
+const path_mp3 = process.env.PATH_MP3 ? process.env.PATH_MP3 : '.' ;
 const sessionDataPath = process.env.PATH_SESSION ? process.env.PATH_SESSION : './' ;
-
-// If you add group IDs here, audio sent to these groups will be transcribed
 const groups = process.env.GROUPS ? process.env.GROUPS : 'xxxx,yyyy' ;
 const allowedGroups = groups.split(',');
 
