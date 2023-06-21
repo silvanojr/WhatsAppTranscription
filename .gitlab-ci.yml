@@ -1,0 +1,37 @@
+image: docker:stable
+
+stages:
+  - build
+  - portainer
+### BUILD
+build:
+  stage: build
+  only:
+    - master
+    - main
+  script:
+    - docker build . -t "$CI_REGISTRY_IMAGE:latest" --no-cache 
+    - docker login $CI_REGISTRY -u $CI_REGISTRY_USER  -p $CI_REGISTRY_PASSWORD
+    - docker push "$CI_REGISTRY_IMAGE:latest"
+
+#### DEPLOY
+#
+# Exige configuração no PORTAINER e GITLAB 
+#
+# WEBHOOK_PORTAINER: Possui a URL para rebootar o Serviço em produção
+# URL de Webhook será enviada pela SeTIC mediante requisição via chamado.
+# Esta variavel deve ser configurada no codigos.ufsc.br:
+#  Dentro do projeto > Settings > CI/CD > Secret Variables
+portainer: 
+  stage: portainer
+  only:
+    - master
+    - main
+  variables:
+    GIT_CHECKOUT: "false"
+  script:
+          - if [[ ! -z "${WEBHOOK_PORTAINER}" ]]; then
+            for url in $(echo ${WEBHOOK_PORTAINER} | sed "s/,/ /g"); do wget --post-data '' -O - "$url"; done
+            else
+              echo "Empty \$WEBHOOK_PORTAINER" ; exit 1;
+            fi
