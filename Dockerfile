@@ -3,4 +3,4 @@ USER root
 WORKDIR /app
 COPY . /app/
 RUN apt update ; apt install -y ffmpeg ;  npm install ; rm -fR /var/lib/apt/lists/*
-ENTRYPOINT ['node','index.js']
+CMD node index.js
