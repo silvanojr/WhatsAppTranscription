@@ -1,7 +1,6 @@
 const wa = require('@open-wa/wa-automate');
 const mime = require('mime-types');
 const fs = require('fs');
-const { exec } = require("child_process");
 const { Configuration, OpenAIApi } = require("openai");
 
 require('dotenv').config();
@@ -38,32 +37,18 @@ function start(client) {
             const mediaData = await wa.decryptMedia(message);
 
             fs.writeFile(filename, mediaData, async function (err) {
-                if (err) {
-                    return console.log(err);
-                }
+                if (err) { return console.log(err); }
                 console.log('The file was saved!');
-
-                // convert to mp3
-                exec(`ffmpeg -v 0 -i ${filename} -acodec libmp3lame ${filename}.mp3`, async (error, stdout, stderr) => {
-                    if (error) {
-                        console.log(`error: ${error.message}`);
-                        return;
-                    }
-                    if (stderr) {
-                        console.log(`stderr: ${stderr}`);
-                        return;
-                    }
-
-                    //console.log(`stdout: ${stdout}`);
-
-                    // call OpenAI's API
-                    const resp = await openai.createTranscription(
-                        fs.createReadStream(`${filename}.mp3`),
+                // call OpenAI's API
+                const resp = await openai.createTranscription(
+                        fs.createReadStream(`${filename}`),
                         "whisper-1"
-                    );
-
-                    client.reply(message.chatId, `🗣️ \`\`\`${resp.data.text}\`\`\``, message.id);
-                });
+                );
+                console.log(`Texto Traduzido: ${resp.data.text}`);
+                console.log(`ChatId: ${message.chatId}`);
+                console.log(`MId: ${message.id}`);
+                await client.sendText( message.chatId, `🗣️ \`\`\`${resp.data.text}\`\`\`` );
+                //await client.reply(    message.chatId, `🗣️ \`\`\`${resp.data.text}\`\`\``, message);
             });
 
         }
