@@ -25,7 +25,12 @@ wa.create({
     popup: true,
     qrTimeout: 300, //0 means it will wait forever for you to scan the qr code
     sessionDataPath,
-}).then( client => { client.onAnyMessage( processMessage() )} );
+//}).then( client => { client.onAnyMessage( processMessage() )} );
+}).then(client => start(client));
+
+async function start(client) {
+    client.onAnyMessage(async message => processMessage(message,client) )
+}
 
 function isManualTranslation( message ) {
     if  (      message.body 
@@ -49,23 +54,19 @@ function isAutomaticTranslation( message ) {
 }
 
 function shouldBeTranslated( message ) {
-    return  message && ( isManualTranslation( message ) || isAutomaticTranslation( message ) )
+    return isManualTranslation( message ) || isAutomaticTranslation( message )
 }
 
-async function processMessage( message ){
+async function processMessage( message , client){
     if ( process.env.DEBUG ) { console.log( message ); }
-    if ( shouldBeTranslated( message ) ) {
-        console.log(`ChatId: ${message.chatId} \n MId: ${message.id}`);
-        const filename = `${path_mp3}/${message.t}.${mime.extension(message.mimetype)}`;
+    if ( message && shouldBeTranslated( message ) ) {
         audioMessage = message.body === secret_word ? message.quotedMsg : message
+        const filename = `${path_mp3}/${audioMessage.t}.${mime.extension(audioMessage.mimetype)}`;
         const mediaData = await wa.decryptMedia(audioMessage);
-        fs.writeFile(filename, mediaData, async err => {
-            if ( err ) { return console.log(err); }
-            console.log('The file was saved!');
-            const resp = await openai.createTranscription( fs.createReadStream(`${filename}`), "whisper-1" );
-            console.log(`Texto Traduzido: ${resp.data.text}`);
-            await client.sendText( message.chatId, `🗣️ \`\`\`${resp.data.text}\`\`\`` );
-        });
+        fs.writeFile(filename, mediaData, async err => { if( err ) { return console.log(err); }})
+        const resp = await openai.createTranscription( fs.createReadStream(`${filename}`), "whisper-1" );
+	await client.reply(audioMessage.chatId, `🗣️ \`\`\`${resp.data.text}\`\`\``, audioMessage.id);
+	//await fs.unlink(filename) 
     }
 }
 

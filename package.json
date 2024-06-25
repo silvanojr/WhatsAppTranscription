@@ -10,9 +10,9 @@
   "license": "ISC",
   "dependencies": {
     "@open-wa/wa-automate": "^4.71.13",
-    "dotenv": "^16.0.3",
+    "dotenv": "^16.4.5",
     "mime": "^3.0.0",
     "nodejs": "^0.0.0",
-    "openai": "^3.2.1"
+    "openai": "^3.3.0"
   }
 }
