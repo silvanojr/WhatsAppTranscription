@@ -1,5 +1,4 @@
-#FROM  openwa/wa-automate
-FROM  node:20
+FROM  openwa/wa-automate
 USER root
 WORKDIR /app
 COPY . /app/
