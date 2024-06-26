@@ -25,12 +25,7 @@ wa.create({
     popup: true,
     qrTimeout: 300, //0 means it will wait forever for you to scan the qr code
     sessionDataPath,
-//}).then( client => { client.onAnyMessage( processMessage() )} );
-}).then(client => start(client));
-
-async function start(client) {
-    client.onAnyMessage(async message => processMessage(message,client) )
-}
+}).then( client => { client.onAnyMessage( async message => { processMessage( message, client ) })} );
 
 function isManualTranslation( message ) {
     if  (      message.body 
@@ -53,13 +48,9 @@ function isAutomaticTranslation( message ) {
     )
 }
 
-function shouldBeTranslated( message ) {
-    return isManualTranslation( message ) || isAutomaticTranslation( message )
-}
-
 async function processMessage( message , client){
     if ( process.env.DEBUG ) { console.log( message ); }
-    if ( message && shouldBeTranslated( message ) ) {
+    if ( isManualTranslation( message ) || isAutomaticTranslation( message ) ) {
         audioMessage = message.body === secret_word ? message.quotedMsg : message
         const filename = `${path_mp3}/${audioMessage.t}.${mime.extension(audioMessage.mimetype)}`;
         const mediaData = await wa.decryptMedia(audioMessage);
