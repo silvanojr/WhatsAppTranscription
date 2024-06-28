@@ -1,0 +1,5 @@
+node_modules/
+.node-persist/
+TranscricaoDeAudio.data.json
+_IGNORE_TranscricaoDeAudio/
+package-lock.json

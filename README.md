@@ -15,3 +15,30 @@ It will be ready when you see this message in the console:
 🚀 @OPEN-WA ready for account: XXXX
 
 Enjoy.
+
+# Feature
+* It's possible to manually force an audio to be read using the variable SECRET_WORD. Default is "!ler" 
+
+# Docker
+```shell
+docker build . -t whats
+```
+# Docker Compose
+```yaml
+version: "3.5"
+services:
+  speech2text:
+    image: whats
+    environment:
+       - OPENAI_API_KEY=sk-xxxxxxx
+       - GROUPS=aaaaaaaa-bbbbbbb@g.us,yyyyyyyyy-xxxxxxxx@g.us
+       - PATH_MP3=/mp3
+       - PATH_SESSION=/session
+       - SECRET_WORD=!ler
+    volumes:
+       - session:/session
+       - mp3:/mp3
+volumes:
+  session:
+  mp3:
+```
